@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import axios from '../axios';
+import axios from '../axios'
+import React, { useEffect, useState } from 'react'
 import './Row.css'
-import Youtube from 'react-youtube';
-import movieTrailer from 'movie-trailer';
-
+import Youtube from 'react-youtube'
+import movieTrailer from "movie-trailer"
 const base_url='https://image.tmdb.org/t/p/original/'
 
 function Row({title, fetchUrl, isLargeRow}){
@@ -30,19 +29,26 @@ function Row({title, fetchUrl, isLargeRow}){
             autoplay: 1, 
         }
     }
-const handleClick= (movie)=>{
-    if(trailerUrl){
-        setTrailerUrl('');
-    }else{
-        movieTrailer(movie?.name || '')
-        .then((url)=>{
-           
-            const urlParams = new URLSearchParams(new URL(url).search);
-            setTrailerUrl(urlParams.get('v'))
-        })
-        .catch((error) => console.log(error))
-    }
-}
+
+
+    const handleClick = (movie) => {
+        if(trailerUrl){
+          setTrailerUrl('')
+        } else {
+          movieTrailer(movie?.name || "")
+            .then((url) => {
+              // https://www.youtube.com/watch?v=g59rUQbVlIw
+              // we need this id, g59rUQbVlIw
+    
+              const urlParams = new URLSearchParams(new URL(url).search) // ?v=g59rUQbVlIw
+              setTrailerUrl(urlParams.get('v'))  // g59rUQbVlIw
+            })
+            .catch((error) => console.log(error))
+        }
+      }
+    
+    
+
 
 return (
 <div className='row'>
@@ -53,13 +59,14 @@ return (
         <img 
         className={`row_poster ${isLargeRow && 'row_posterlarge' }`}
         key={movie.id}
-        onClick={()=>handleClick(movie)}
+        onClick={() => handleClick(movie)}
         src={`${base_url}${
             isLargeRow ? movie.poster_path : movie.backdrop_path}`} 
         alt={movie.title}/>
     ))}
     </div>
-    {trailerUrl && <Youtube videoId={trailerUrl} opts={opts}/>}
+    {trailerUrl && <Youtube videoId={trailerUrl}f opts={opts} /> 
+      }
  </div>
     )
 }
